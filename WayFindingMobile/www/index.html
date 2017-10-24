@@ -1,0 +1,167 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!--
+        Customize the content security policy in the meta tag below as needed. Add 'unsafe-inline' to default-src to enable inline JavaScript.
+        For details, see http://go.microsoft.com/fwlink/?LinkID=617521
+    -->
+    <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">-->
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,height=device-height, minimum-scale=1, initial-scale=1, user-scalable=no">
+    <meta HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <meta http-equiv="Content-Security-Policy" content="default-src data: *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' *">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+
+    <link href="css/kendo.common.min.css" rel="stylesheet" />
+    <!--<link href="Content/kendo.rtl.min.css" rel="stylesheet" />-->
+    <link href="css/kendo.default.min.css" rel="stylesheet" />
+    <link href="css/kendo.default.mobile.min.css" rel="stylesheet" />
+
+    <link href="css/Site.css" rel="stylesheet" />
+    <link href="css/jquery-ui.css" media="all" rel="stylesheet" type="text/css" />
+
+    <title>Way Finding</title>
+
+    <script src="Scripts/modernizr-2.8.3.js"></script>
+    <script src="Scripts/jquery-2.1.4.min.js"></script>
+    <script src="Scripts/d3.v3.min.js"></script>
+
+    <script src="Scripts/jquery.wayfinding.js"></script>
+
+    <script src="Scripts/jszip.min.js"></script>
+    <script src="Scripts/kendo.all.min.js"></script>
+
+
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
+
+    <script src="Scripts/Helper.js"></script>
+
+    <style>
+        .k-grid-content {
+            overflow-y: visible !important;
+            -webkit-overflow-scrolling: touch;
+            overflow-scrolling: touch;
+        }
+
+        #BrowsRoomWindow {
+            overflow-y: visible !important;
+            -webkit-overflow-scrolling: touch;
+            overflow-scrolling: touch;
+        }
+    </style>
+</head>
+<body id="fullscreen">
+    <div class="Container" id="Container">
+        <!--<div id="mapLoading">Loading</div>-->
+        <div class="MapContainer" style="background-color: white;width:75%;height:100%;" id="myMaps">
+            <h1 id="LogHeader" style="padding:0; margin:0 0 0 20px;">Connecting to the server please wait....</h1>
+        </div>
+
+        <div class="SidePanel" id="SidePanel">
+            <div class="Row">
+                <input id="btn_Search" class="k-button SideButtons" type="button" data-English="Search" data-Arabic="بحث" value="Search" />
+                <input id="btn_Brows" class="k-button SideButtons" type="button" data-English="Browse" data-Arabic="تصفح" value="Browse" />
+                <input id="btn_ChangeLanguage" data-English="عربى" data-Arabic="English" class="k-button SideButtons" type="button" value="عربى" />
+
+            </div>
+            <div id="div_Options" class="Row optionButtons">
+                <input class="k-button SideButtons" id="btn_Department" type="button" data-English="Department" data-Arabic="الإدارة" value="Department" />
+                <input class="k-button SideButtons" id="btn_Employee" type="button" data-English="Employee" data-Arabic="الموظف" value="Employee" />
+                <input class="k-button SideButtons" id="btn_RoomNumber" type="button" data-English="Room Number" data-Arabic="رقم الغرفة" value="Room Number" />
+            </div>
+            <div id="FlooersIcons" class="Row">
+                <div id="destinationTitle" class="TemplateOrgnization" style="display:none; line-height:50px;">
+                    <h1 id="DestinationName" style="line-height:50px; width:100%; line-height:50px; color:white; ">Destination</h1>
+                </div>
+                <div id="RoutInformationFloor" class="TemplateOrgnization" style="display:none;">
+                    <h1 id="FlooerNumber" class="OodH1">1</h1>
+                </div>
+                <div id="RoutInformationRoom" class="TemplateOrgnization" style="display:none; color:#f35800;">
+                    <h1 id="RoomNumber" class="EvenH1">1</h1>
+                </div>
+                <div id="FlooerContainer1" class="FlooersContainer" style="display:none;">
+                    <h1 class="FloorLabel" data-Arabic="الطابق الأرضي" data-English="Ground Floor" id="FloorLabel1">Ground Floor</h1>
+                    <img style="width:60%;" id="img_Floor1" src="Images/FloorG.png" />
+                </div>
+                <div id="FlooerContainer2" style="display:none;" class="FlooersContainer">
+                    <h1 class="FloorLabel" id="FloorLabel2" data-Arabic="الطابق الأول" data-English="First Floor">First Floor</h1>
+                    <img style="width:60%;" id="img_Floor2" src="Images/Floor1.png" />
+                </div>
+                <div id="FlooerContainer3" class="FlooersContainer" style="display:none;">
+                    <h1 class="FloorLabel" id="FloorLabel3" data-Arabic="الطابق الثانى" data-English="Second Floor">Second Floor</h1>
+                    <img style="width:60%;" id="img_Floor3" src="Images/Floor2.png" />
+                </div>
+
+
+            </div>
+        </div>
+        <div id="SearchEmplyeewindow" class="PopupWinodw Standerheight">
+            <div style="height: 200px;">
+                <h1 class="HeaderText" data-Arabic="بحث" data-English="Search">Search</h1>
+                <input id="txt_SearchEmployee" type="search" class="k-textbox SearchTextBox" />
+                <input id="btn_SearchEmployee" class="k-button SearchButton" type="button" data-Arabic="بحث" data-English="Search" value="Search" />
+                <input id="btn_closeEmployee" class="k-button SearchButton" type="button" data-Arabic="غلق" data-English="Close" value="Close" />
+            </div>
+            <div id="SearchGridEmployee" class="GridSize"></div>
+        </div>
+
+        <div id="SearchDepartmentWindow" class="PopupWinodw Standerheight">
+            <div style="height: 200px;">
+                <h1 class="HeaderText" data-Arabic="بحث" data-English="Search">Search</h1>
+                <input id="txt_SearchDepartment" type="search" class="k-textbox SearchTextBox" />
+                <input id="btn_SearchDepartment" class="k-button SearchButton" data-Arabic="بحث" data-English="Search" type="button" value="Search" />
+                <input id="btn_closeDepartment" class="k-button SearchButton" type="button" data-Arabic="غلق" data-English="Close" value="Close" />
+            </div>
+            <div id="SearchGridDepartment" class="GridSize"></div>
+        </div>
+
+        <div id="SearchRoomtWindow" class="PopupWinodw Standerheight">
+            <div style="height: 200px;">
+                <h1 class="HeaderText" data-Arabic="بحث" data-English="Search">Search</h1>
+                <input id="txt_SearchRoom" type="search" class="k-textbox SearchTextBox" />
+                <input id="btn_SearchRoomNumber" class="k-button SearchButton" data-Arabic="بحث" data-English="Search" type="button" value="Search" />
+                <input id="btn_closeRoomNumber" class="k-button SearchButton" type="button" data-Arabic="غلق" data-English="Close" value="Close" />
+            </div>
+            <div id="SearchGridRoomnumber" class="GridSize"></div>
+        </div>
+
+
+        <div id="BrowsDepartmentWindow" class="PopupWinodw Standerheight">
+            <div class="InformationClass">
+                <h1 class="HeaderText" data-Arabic="تصفح" data-English="Browse" style="display:inline;">Browse</h1>
+                <input id="btn_CloseBrowseDepartment" style="float:right; margin-right:15px;" class="k-button SearchButton" type="button" data-Arabic="غلق" data-English="Close" value="Close" />
+            </div>
+            <div id="BrowsGridDepartment" class="BrowseGridSize"></div>
+        </div>
+
+        <div id="BrowsEmplyeeWindow" class="PopupWinodw Standerheight">
+            <div class="InformationClass">
+                <h1 class="HeaderText" style="display:inline;" data-Arabic="تصفح" data-English="Browse">Browse</h1>
+                <input id="btn_CloseBrowseEmployee" style="float:right; margin-right:15px;" class="k-button SearchButton" data-Arabic="غلق" data-English="Close" type="button" value="Close" />
+            </div>
+            <div id="BrowsGridEmplyee" class="BrowseGridSize"></div>
+        </div>
+
+        <div id="BrowsRoomWindow" class="PopupWinodw Standerheight">
+            <div class="InformationClass">
+                <h1 class="HeaderText" style="display:inline;" data-Arabic="تصفح" data-English="Browse">Browse</h1>
+                <input id="btn_CloseBrowseRoomNumber" style="float:right; margin-right:15px;" class="k-button SearchButton" type="button" data-Arabic="غلق" data-English="Close" value="Close" />
+            </div>
+            <div id="BrowsGridRoom" class="BrowseGridSize"></div>
+        </div>
+    </div>
+    <style>
+        #fullscreen:-moz-full-screen, #fullscreen:-ms-fullscreen, #fullscreen:-webkit-full-screen, #floor11, #floor12, #floor13 {
+            background-color: white !important;
+        }
+    </style>
+   
+</body>
+</html>
